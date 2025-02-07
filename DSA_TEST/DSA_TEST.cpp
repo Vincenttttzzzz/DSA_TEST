@@ -129,6 +129,7 @@ void displayArtAndTitle() {
 
 int main()
 {
+    HashTable<std::shared_ptr<Actor>> actorTable = HashTable<std::shared_ptr<Actor>>();
     HashTable<std::shared_ptr<Movie>> movieTable = HashTable<std::shared_ptr<Movie>>();
 
     //Graph actorToActor(false);
