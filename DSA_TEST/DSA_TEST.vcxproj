@@ -138,12 +138,15 @@
     <ClCompile Include="GraphTest.cpp" />
     <ClCompile Include="Rating.cpp" />
     <ClCompile Include="RatingSystem.cpp" />
+    <ClCompile Include="Queue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="HashTable.h" />
     <ClInclude Include="BinaryTree.h" />
     <ClInclude Include="Graph.h" />
+    <ClInclude Include="AVLTree.h" />
+    <ClInclude Include="Queue.h" />
     <ClInclude Include="Rating.h" />
     <ClInclude Include="RatingSystem.h" />
     <ClInclude Include="Vector.h" />

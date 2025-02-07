@@ -21,7 +21,7 @@ private:
     HashTable<EntityRatings*> actorRatings;  // Key: Actor ID
     double sumAll = 0.0;             // Sum of all ratings globally
     int countAll = 0;                // Total number of ratings globally
-    int m = 1000;                    // Minimum votes threshold (configurable)
+    int m = 1000;                    // Minimum votes threshold (
 
 public:
     // Add a rating to a movie

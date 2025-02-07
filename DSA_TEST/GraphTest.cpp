@@ -156,59 +156,59 @@
 
 
 // Latest ver
-#include "Graph.h"
+//#include "Graph.h"
 
 // Constructor
-Graph::Graph(bool directed) : isDirected(directed) {
-}
-
-// Add an edge between two actors
+//Graph::Graph(bool directed) : isDirected(directed) {
+//}
 //
-void Graph::addEdge(int srcID, const std::weak_ptr<Actor>& destActor) {
-    std::shared_ptr<Actor> lockedDest = destActor.lock(); // Declare before if statement
-
-    //std::cout << "DEBUG: Adding edge from Actor " << srcID << " to ";
-    if (lockedDest) {   
-        //std::cout << lockedDest->getActorID() << std::endl;
-    }
-    else {
-        std::cout << "NULL (weak_ptr expired)" << std::endl;
-        return;
-    }
-
-    // Ensure srcID exists in the adjacency list
-    if (adjacencyList.get(srcID) == nullptr) {
-        //std::cout << "DEBUG: No existing list for " << srcID << ", creating new linked list.\n";
-        adjacencyList.add(srcID, new LinkedList<std::weak_ptr<Actor>>());
-    }
-
-    // Retrieve linked list for srcID
-    LinkedList<std::weak_ptr<Actor>>* neighbors = adjacencyList.get(srcID);
-    if (!neighbors) {
-        std::cerr << "ERROR: Could not retrieve adjacency list for Actor " << srcID << std::endl;
-        return;
-    }
-
-    // Check if destActor already exists
-    bool exists = false;
-    for (int i = 0; i < neighbors->getLength(); ++i) {
-        if (auto existing = neighbors->get(i).lock()) {
-            if (existing->getActorID() == lockedDest->getActorID()) {
-                exists = true;
-                break;
-            }
-        }
-    }
-
-    if (!exists) {
-        //std::cout << "DEBUG: Inserting Actor " << lockedDest->getActorID() << " into adjacency list of " << srcID << std::endl;
-        neighbors->add(destActor);
-    }
-    else {
-        //std::cout << "DEBUG: Actor " << lockedDest->getActorID() << " already exists in adjacency list of " << srcID << std::endl;
-    }
-
-}
+//// Add an edge between two actors
+////
+//void Graph::addEdge(int srcID, const std::weak_ptr<Actor>& destActor) {
+//    std::shared_ptr<Actor> lockedDest = destActor.lock(); // Declare before if statement
+//
+//    //std::cout << "DEBUG: Adding edge from Actor " << srcID << " to ";
+//    if (lockedDest) {   
+//        //std::cout << lockedDest->getActorID() << std::endl;
+//    }
+//    else {
+//        std::cout << "NULL (weak_ptr expired)" << std::endl;
+//        return;
+//    }
+//
+//    // Ensure srcID exists in the adjacency list
+//    if (adjacencyList.get(srcID) == nullptr) {
+//        //std::cout << "DEBUG: No existing list for " << srcID << ", creating new linked list.\n";
+//        adjacencyList.add(srcID, new LinkedList<std::weak_ptr<Actor>>());
+//    }
+//
+//    // Retrieve linked list for srcID
+//    LinkedList<std::weak_ptr<Actor>>* neighbors = adjacencyList.get(srcID);
+//    if (!neighbors) {
+//        std::cerr << "ERROR: Could not retrieve adjacency list for Actor " << srcID << std::endl;
+//        return;
+//    }
+//
+//    // Check if destActor already exists
+//    bool exists = false;
+//    for (int i = 0; i < neighbors->getLength(); ++i) {
+//        if (auto existing = neighbors->get(i).lock()) {
+//            if (existing->getActorID() == lockedDest->getActorID()) {
+//                exists = true;
+//                break;
+//            }
+//        }
+//    }
+//
+//    if (!exists) {
+//        //std::cout << "DEBUG: Inserting Actor " << lockedDest->getActorID() << " into adjacency list of " << srcID << std::endl;
+//        neighbors->add(destActor);
+//    }
+//    else {
+//        //std::cout << "DEBUG: Actor " << lockedDest->getActorID() << " already exists in adjacency list of " << srcID << std::endl;
+//    }
+//
+//}
 
 
 
@@ -341,22 +341,22 @@ void Graph::addEdge(int srcID, const std::weak_ptr<Actor>& destActor) {
 //    }
 //}
 
-void Graph::printGraph() const {
-    for (int i = 0; i < MAX_SIZE; i++) {
-        LinkedList<std::weak_ptr<Actor>>* neighbors = adjacencyList.get(i);
-        if (neighbors == nullptr) continue;
-
-        std::cout << "Actor " << i << " knows: ";
-
-        for (LinkedListNode<std::weak_ptr<Actor>>* node = neighbors->getFirstNode(); node != nullptr; node = node->next) {
-            if (auto actorPtr = node->item.lock()) {
-                std::cout << actorPtr->getName() << " (ID: " << actorPtr->getActorID() << ") ";
-            }
-        }
-
-        std::cout << std::endl;
-    }
-}
+//void Graph::printGraph() const {
+//    for (int i = 0; i < MAX_SIZE; i++) {
+//        LinkedList<std::weak_ptr<Actor>>* neighbors = adjacencyList.get(i);
+//        if (neighbors == nullptr) continue;
+//
+//        std::cout << "Actor " << i << " knows: ";
+//
+//        for (LinkedListNode<std::weak_ptr<Actor>>* node = neighbors->getFirstNode(); node != nullptr; node = node->next) {
+//            if (auto actorPtr = node->item.lock()) {
+//                std::cout << actorPtr->getName() << " (ID: " << actorPtr->getActorID() << ") ";
+//            }
+//        }
+//
+//        std::cout << std::endl;
+//    }
+//}
 
 
 // Display actors that a given actor knows (direct and indirect up to 2 levels)
@@ -395,54 +395,54 @@ void Graph::printGraph() const {
 //}
 
 
-void Graph::displayKnownActors(int actorID) const {
-    LinkedList<std::weak_ptr<Actor>>* firstLevel = adjacencyList.get(actorID);
-
-    if (!firstLevel) {
-        std::cout << "Actor with ID " << actorID << " not found or has no connections.\n";
-        return;
-    }
-
-    // Track direct and indirect actors using HashTable for O(1) checks
-    HashTable<bool> directHash;   // Key: actorID, Value: unused (just needs existence)
-    HashTable<bool> indirectHash; // Key: actorID, Value: unused
-
-    // Direct connections (guaranteed unique)
-    std::cout << "Directly knows: ";
-    for (auto node = firstLevel->getFirstNode(); node != nullptr; node = node->next) {
-        if (auto actor = node->item.lock()) {
-            int id = actor->getActorID();
-            directHash.add(id, true); // Mark as direct connection
-            std::cout << actor->getName() << " (ID: " << id << ") ";
-        }
-    }
-
-    // Indirect connections (friends-of-friends)
-    std::cout << "\nIndirectly knows: ";
-    for (auto node = firstLevel->getFirstNode(); node != nullptr; node = node->next) {
-        if (auto directActor = node->item.lock()) {
-            LinkedList<std::weak_ptr<Actor>>* secondLevel = adjacencyList.get(directActor->getActorID());
-            if (!secondLevel) continue;
-
-            for (auto secondNode = secondLevel->getFirstNode(); secondNode != nullptr; secondNode = secondNode->next) {
-                if (auto indirectActor = secondNode->item.lock()) {
-                    int indirectID = indirectActor->getActorID();
-
-                    // Skip if self, direct, or already added
-                    if (indirectID == actorID || directHash.get(indirectID) || indirectHash.get(indirectID)) {
-                        continue;
-                    }
-
-                    // Mark as indirect and print
-                    indirectHash.add(indirectID, true);
-                    std::cout << indirectActor->getName() << " (ID: " << indirectID << ") ";
-                }
-            }
-        }
-    }
-
-    std::cout << std::endl;
-}
+//void Graph::displayKnownActors(int actorID) const {
+//    LinkedList<std::weak_ptr<Actor>>* firstLevel = adjacencyList.get(actorID);
+//
+//    if (!firstLevel) {
+//        std::cout << "Actor with ID " << actorID << " not found or has no connections.\n";
+//        return;
+//    }
+//
+//    // Track direct and indirect actors using HashTable for O(1) checks
+//    HashTable<bool> directHash;   // Key: actorID, Value: unused (just needs existence)
+//    HashTable<bool> indirectHash; // Key: actorID, Value: unused
+//
+//    // Direct connections (guaranteed unique)
+//    std::cout << "Directly knows: ";
+//    for (auto node = firstLevel->getFirstNode(); node != nullptr; node = node->next) {
+//        if (auto actor = node->item.lock()) {
+//            int id = actor->getActorID();
+//            directHash.add(id, true); // Mark as direct connection
+//            std::cout << actor->getName() << " (ID: " << id << ") ";
+//        }
+//    }
+//
+//    // Indirect connections (friends-of-friends)
+//    std::cout << "\nIndirectly knows: ";
+//    for (auto node = firstLevel->getFirstNode(); node != nullptr; node = node->next) {
+//        if (auto directActor = node->item.lock()) {
+//            LinkedList<std::weak_ptr<Actor>>* secondLevel = adjacencyList.get(directActor->getActorID());
+//            if (!secondLevel) continue;
+//
+//            for (auto secondNode = secondLevel->getFirstNode(); secondNode != nullptr; secondNode = secondNode->next) {
+//                if (auto indirectActor = secondNode->item.lock()) {
+//                    int indirectID = indirectActor->getActorID();
+//
+//                    // Skip if self, direct, or already added
+//                    if (indirectID == actorID || directHash.get(indirectID) || indirectHash.get(indirectID)) {
+//                        continue;
+//                    }
+//
+//                    // Mark as indirect and print
+//                    indirectHash.add(indirectID, true);
+//                    std::cout << indirectActor->getName() << " (ID: " << indirectID << ") ";
+//                }
+//            }
+//        }
+//    }
+//
+//    std::cout << std::endl;
+//}
 
 
 //void Graph::displayKnownActors(int actorID) const {
@@ -532,55 +532,55 @@ void Graph::displayKnownActors(int actorID) const {
 
 
 // Check if the graph is empty
-bool Graph::isEmpty() const {
-    return const_cast<HashTable<LinkedList<std::weak_ptr<Actor>>*>&>(adjacencyList).getLength() == 0;
-}
-
-// Get the number of vertices in the graph
-int Graph::getVertexCount() const {
-    return const_cast<HashTable<LinkedList<std::weak_ptr<Actor>>*>&>(adjacencyList).getLength(); // Ensure method compatibility with non-const context
-}
-// Insert actor relationships from actor-movie data into the graph
-// 
-void Graph::insertActorRelationships(
-    LinkedList<std::weak_ptr<Actor>>* actorList,
-    std::weak_ptr<Actor> sourceActor
-) {
-    //std::cout << "DEBUG: insertActorRelationships() called\n";
-
-    if (!actorList) {
-        std::cerr << "ERROR: Invalid actor list reference!\n";
-        return;
-    }
-
-    // Lock the sourceActor to get its ID
-    auto sourceShared = sourceActor.lock();
-    if (!sourceShared) {
-        std::cout << "WARNING: Source actor expired.\n";
-        return;
-    }
-    int sourceId = sourceShared->getActorID();
-
-    // Iterate through co-actors
-    for (auto node = actorList->getFirstNode(); node != nullptr; node = node->next) {
-        if (auto coActor = node->item.lock()) {
-            int coActorId = coActor->getActorID();
-
-            if (coActorId != sourceId) {
-                // Add edge: sourceActor -> coActor
-                addEdge(sourceId, node->item);
-
-                // For undirected graphs, add reverse edge: coActor -> sourceActor
-                if (!isDirected) {
-                    addEdge(coActorId, sourceActor);
-                }
-            }
-        }
-        else {
-            std::cout << "WARNING: Skipping expired weak_ptr\n";
-        }
-    }
-}
+//bool Graph::isEmpty() const {
+//    return const_cast<HashTable<LinkedList<std::weak_ptr<Actor>>*>&>(adjacencyList).getLength() == 0;
+//}
+//
+//// Get the number of vertices in the graph
+//int Graph::getVertexCount() const {
+//    return const_cast<HashTable<LinkedList<std::weak_ptr<Actor>>*>&>(adjacencyList).getLength(); // Ensure method compatibility with non-const context
+//}
+//// Insert actor relationships from actor-movie data into the graph
+//// 
+//void Graph::insertActorRelationships(
+//    LinkedList<std::weak_ptr<Actor>>* actorList,
+//    std::weak_ptr<Actor> sourceActor
+//) {
+//    //std::cout << "DEBUG: insertActorRelationships() called\n";
+//
+//    if (!actorList) {x
+//        std::cerr << "ERROR: Invalid actor list reference!\n";
+//        return;
+//    }
+//
+//    // Lock the sourceActor to get its ID
+//    auto sourceShared = sourceActor.lock();
+//    if (!sourceShared) {
+//        std::cout << "WARNING: Source actor expired.\n";
+//        return;
+//    }
+//    int sourceId = sourceShared->getActorID();
+//
+//    // Iterate through co-actors
+//    for (auto node = actorList->getFirstNode(); node != nullptr; node = node->next) {
+//        if (auto coActor = node->item.lock()) {
+//            int coActorId = coActor->getActorID();
+//
+//            if (coActorId != sourceId) {
+//                // Add edge: sourceActor -> coActor
+//                addEdge(sourceId, node->item);
+//
+//                // For undirected graphs, add reverse edge: coActor -> sourceActor
+//                if (!isDirected) {
+//                    addEdge(coActorId, sourceActor);
+//                }
+//            }
+//        }
+//        else {
+//            std::cout << "WARNING: Skipping expired weak_ptr\n";
+//        }
+//    }
+//}
 
 //void Graph::insertActorRelationships(LinkedList<std::weak_ptr<Actor>>* actorList, int actorId) {
 //    std::cout << "DEBUG: insertActorRelationships() called for Actor " << actorId << std::endl;
@@ -645,6 +645,184 @@ void Graph::insertActorRelationships(
 //                std::cout << actorId << " " << coActor->getActorID() << endl;
 //                addEdge(actorId, coActor);
 //            }
+//        }
+//    }
+//}
+
+
+
+
+
+
+// complete
+// Latest ver
+//#include "Graph.h"
+
+// Constructor
+//Graph::Graph(bool directed) : isDirected(directed) {
+//}
+//
+//// Add an edge between two actors
+////
+//void Graph::addEdge(int srcID, const std::weak_ptr<Actor>& destActor) {
+//    std::shared_ptr<Actor> lockedDest = destActor.lock(); // Declare before if statement
+//
+//    //std::cout << "DEBUG: Adding edge from Actor " << srcID << " to ";
+//    if (lockedDest) {
+//        //std::cout << lockedDest->getActorID() << std::endl;
+//    }
+//    else {
+//        std::cout << "NULL (weak_ptr expired)" << std::endl;
+//        return;
+//    }
+//
+//    // Ensure srcID exists in the adjacency list
+//    if (adjacencyList.get(srcID) == nullptr) {
+//        //std::cout << "DEBUG: No existing list for " << srcID << ", creating new linked list.\n";
+//        adjacencyList.add(srcID, new LinkedList<std::weak_ptr<Actor>>());
+//    }
+//
+//    // Retrieve linked list for srcID
+//    LinkedList<std::weak_ptr<Actor>>* neighbors = adjacencyList.get(srcID);
+//    if (!neighbors) {
+//        std::cerr << "ERROR: Could not retrieve adjacency list for Actor " << srcID << std::endl;
+//        return;
+//    }
+//
+//    // Check if destActor already exists
+//    bool exists = false;
+//    for (int i = 0; i < neighbors->getLength(); ++i) {
+//        if (auto existing = neighbors->get(i).lock()) {
+//            if (existing->getActorID() == lockedDest->getActorID()) {
+//                exists = true;
+//                break;
+//            }
+//        }
+//    }
+//
+//    if (!exists) {
+//        //std::cout << "DEBUG: Inserting Actor " << lockedDest->getActorID() << " into adjacency list of " << srcID << std::endl;
+//        neighbors->add(destActor);
+//    }
+//    else {
+//        //std::cout << "DEBUG: Actor " << lockedDest->getActorID() << " already exists in adjacency list of " << srcID << std::endl;
+//    }
+//
+//}
+//
+//void Graph::printGraph() const {
+//    for (int i = 0; i < MAX_SIZE; i++) {
+//        LinkedList<std::weak_ptr<Actor>>* neighbors = adjacencyList.get(i);
+//        if (neighbors == nullptr) continue;
+//
+//        std::cout << "Actor " << i << " knows: ";
+//
+//        for (LinkedListNode<std::weak_ptr<Actor>>* node = neighbors->getFirstNode(); node != nullptr; node = node->next) {
+//            if (auto actorPtr = node->item.lock()) {
+//                std::cout << actorPtr->getName() << " (ID: " << actorPtr->getActorID() << ") ";
+//            }
+//        }
+//
+//        std::cout << std::endl;
+//    }
+//}
+//
+//void Graph::displayKnownActors(int actorID) const {
+//    LinkedList<std::weak_ptr<Actor>>* firstLevel = adjacencyList.get(actorID);
+//
+//    if (!firstLevel) {
+//        std::cout << "Actor with ID " << actorID << " not found or has no connections.\n";
+//        return;
+//    }
+//
+//    // Track direct and indirect actors using HashTable for O(1) checks
+//    HashTable<bool> directHash;   // Key: actorID, Value: unused (just needs existence)
+//    HashTable<bool> indirectHash; // Key: actorID, Value: unused
+//
+//    // Direct connections (guaranteed unique)
+//    std::cout << "Directly knows: ";
+//    for (auto node = firstLevel->getFirstNode(); node != nullptr; node = node->next) {
+//        if (auto actor = node->item.lock()) {
+//            int id = actor->getActorID();
+//            directHash.add(id, true); // Mark as direct connection
+//            std::cout << actor->getName() << " (ID: " << id << ") ";
+//        }
+//    }
+//
+//    // Indirect connections (friends-of-friends)
+//    std::cout << "\nIndirectly knows: ";
+//    for (auto node = firstLevel->getFirstNode(); node != nullptr; node = node->next) {
+//        if (auto directActor = node->item.lock()) {
+//            LinkedList<std::weak_ptr<Actor>>* secondLevel = adjacencyList.get(directActor->getActorID());
+//            if (!secondLevel) continue;
+//
+//            for (auto secondNode = secondLevel->getFirstNode(); secondNode != nullptr; secondNode = secondNode->next) {
+//                if (auto indirectActor = secondNode->item.lock()) {
+//                    int indirectID = indirectActor->getActorID();
+//
+//                    // Skip if self, direct, or already added
+//                    if (indirectID == actorID || directHash.get(indirectID) || indirectHash.get(indirectID)) {
+//                        continue;
+//                    }
+//
+//                    // Mark as indirect and print
+//                    indirectHash.add(indirectID, true);
+//                    std::cout << indirectActor->getName() << " (ID: " << indirectID << ") ";
+//                }
+//            }
+//        }
+//    }
+//
+//    std::cout << std::endl;
+//}
+//
+//// Check if the graph is empty
+//bool Graph::isEmpty() const {
+//    return const_cast<HashTable<LinkedList<std::weak_ptr<Actor>>*>&>(adjacencyList).getLength() == 0;
+//}
+//
+//// Get the number of vertices in the graph
+//int Graph::getVertexCount() const {
+//    return const_cast<HashTable<LinkedList<std::weak_ptr<Actor>>*>&>(adjacencyList).getLength(); // Ensure method compatibility with non-const context
+//}
+//// Insert actor relationships from actor-movie data into the graph
+//// 
+//void Graph::insertActorRelationships(
+//    LinkedList<std::weak_ptr<Actor>>* actorList,
+//    std::weak_ptr<Actor> sourceActor
+//) {
+//    //std::cout << "DEBUG: insertActorRelationships() called\n";
+//
+//    if (!actorList) {
+//        std::cerr << "ERROR: Invalid actor list reference!\n";
+//        return;
+//    }
+//
+//    // Lock the sourceActor to get its ID
+//    auto sourceShared = sourceActor.lock();
+//    if (!sourceShared) {
+//        std::cout << "WARNING: Source actor expired.\n";
+//        return;
+//    }
+//    int sourceId = sourceShared->getActorID();
+//
+//    // Iterate through co-actors
+//    for (auto node = actorList->getFirstNode(); node != nullptr; node = node->next) {
+//        if (auto coActor = node->item.lock()) {
+//            int coActorId = coActor->getActorID();
+//
+//            if (coActorId != sourceId) {
+//                // Add edge: sourceActor -> coActor
+//                addEdge(sourceId, node->item);
+//
+//                // For undirected graphs, add reverse edge: coActor -> sourceActor
+//                if (!isDirected) {
+//                    addEdge(coActorId, sourceActor);
+//                }
+//            }
+//        }
+//        else {
+//            std::cout << "WARNING: Skipping expired weak_ptr\n";
 //        }
 //    }
 //}

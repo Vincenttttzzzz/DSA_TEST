@@ -1,6 +1,9 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include "Rating.h"
+#include "RatingSystem.h"
+
 using namespace std;
 
 class Actor {
@@ -34,5 +37,17 @@ public:
             << ", Name: " << actor.name
             << ", Birth Year: " << actor.year;
         return os;
+    }
+
+    void addRating(const Rating& rating, RatingSystem& ratingSystem) {
+        ratingSystem.addActorRating(actorID, rating);
+    }
+
+    double getBayesianAverage(const RatingSystem& ratingSystem) const {
+        return ratingSystem.getActorBayesianAverage(actorID);
+    }
+
+    const LinkedList<Rating>& getReviews(const RatingSystem& ratingSystem) const {
+        return ratingSystem.getActorReviews(actorID);
     }
 };

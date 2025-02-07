@@ -235,10 +235,10 @@ void BST::remove(int target) {
  
 void BST::remove(BinaryNode*& t, int target) {
     if (t != NULL) {
-        if (target < t->item) {
+        if (target < t->id) {
             remove(t->left, target);
         }
-        else if (target > t->item) {
+        else if (target > t->id) {
             remove(t->right, target);
         }
         else {
@@ -273,19 +273,72 @@ void BST::remove(BinaryNode*& t, int target) {
                 while (tempRight->right != NULL) {
                     tempRight = tempRight->right;
                 }
-                t = tempRight   
+                t = tempRight
                 tempRight->left = t->left;*/
                 BinaryNode* tempRight = t->left;
                 while (tempRight->right != NULL) {
                     tempRight = tempRight->right;
                 }
-                int item = tempRight->item;
-                remove(t->left, item);
-                t->item = item;
+                int id = tempRight->id;
+                remove(t->left, id);
+                t->id = id;
             }
         }
     }
 }
+//void BST::remove(BinaryNode*& t, int target) {
+//    if (t != NULL) {
+//        if (target < t->item) {
+//            remove(t->left, target);
+//        }
+//        else if (target > t->item) {
+//            remove(t->right, target);
+//        }
+//        else {
+//            if (t->left == NULL && t->right == NULL) {
+//                BinaryNode* temp = t;
+//                t = NULL;
+//                delete temp;
+//            }
+//            else if (t->left == NULL) {
+//                BinaryNode* temp = t;
+//                if (t == root) {
+//                    root = t->right;
+//                }
+//                else {
+//                    t = t->right;
+//                }
+//                delete temp;
+//            }
+//            else if (t->right == NULL) {
+//                BinaryNode* temp = t;
+//                if (t == root) {
+//                    root = t->left;
+//                }
+//                else {
+//                    t = t->left;
+//                }
+//                delete temp;
+//            }
+//            else {
+//                /*BinaryNode* temp = t;
+//                BinaryNode* tempRight = t->left;
+//                while (tempRight->right != NULL) {
+//                    tempRight = tempRight->right;
+//                }
+//                t = tempRight   
+//                tempRight->left = t->left;*/
+//                BinaryNode* tempRight = t->left;
+//                while (tempRight->right != NULL) {
+//                    tempRight = tempRight->right;
+//                }
+//                int item = tempRight->item;
+//                remove(t->left, item);
+//                t->item = item;
+//            }
+//        }
+//    }
+//}
 
 // Traversals
  
