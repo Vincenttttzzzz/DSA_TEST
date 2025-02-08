@@ -507,11 +507,14 @@ void readCastCSV(const std::string& csvName, Graph& actorMovieGraph) {
             }*/
 
             //std::cout << movie->getTitle() << endl;
-
-            insertActorToMovie(actorMovieGraph, actorID, movieID);
+			//std::cout << actorID << movieID << std::endl;
+            bool inserted = insertActorToMovie(actorMovieGraph, actorID, movieID);
+			if (!inserted) {
+				//std::cerr << "Failed to insert actor " << actorID << " to movie " << movieID << std::endl;
+			}
         }
         catch (const std::exception& e) {
-            std::cerr << "Error: Failed to parse relationship data: " << line << std::endl;
+            //std::cerr << "Error: Failed to parse relationship data: " << line << std::endl;
         }
     }
 
