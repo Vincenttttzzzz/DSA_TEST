@@ -417,8 +417,10 @@ template struct HashTable<EntityRatings*>;
 #include <iostream>
 template <typename T>
 HashTable<T>::HashTable() {
+    items = new HashNode<T>*[MAX_SIZE];
+
     for (int i = 0; i < MAX_SIZE; i++) {
-        items[i] = nullptr;
+        items[i] = NULL;
     }
     size = 0;
 }
@@ -427,11 +429,19 @@ HashTable<T>::HashTable() {
 template <typename T>
 HashTable<T>::~HashTable() {
     for (int i = 0; i < MAX_SIZE; i++) {
-        HashNode<T>* current = items[i];
-        while (current != nullptr) {
-            HashNode<T>* toDelete = current;
-            current = current->next;
-            delete toDelete;
+        HashNode<T>* p = items[i];
+        if (p != NULL) {
+            // Delete the chain if available
+            HashNode<T>* chain = p->next;
+            while (chain != NULL) {
+                HashNode<T>* target = chain;
+                chain = chain->next;
+                delete target;
+            }
+
+            // Delete the table record
+            delete p;
+            items[i] = NULL;
         }
     }
 }
@@ -472,14 +482,14 @@ bool HashTable<T>::add(KeyType newKey, T newItem) {
     int index = hash(newKey);
 
     // Traverse the chain at the hash index to check for duplicate keys
-    HashNode<T>* current = items[index];
-    while (current != nullptr) {
-        if (current->key == newKey) {
-            // Duplicate key found, reject the new entry
-            return false;
-        }
-        current = current->next;
-    }
+    //HashNode<T>* current = items[index];
+    //while (current != nullptr) {
+    //    if (current->key == newKey) {
+    //        // Duplicate key found, reject the new entry
+    //        return false;
+    //    }
+    //    current = current->next;
+    //}
 
     // Create and initialize a new node
     HashNode<T>* newNode = new HashNode<T>();
@@ -496,87 +506,29 @@ bool HashTable<T>::add(KeyType newKey, T newItem) {
 }
 
 
-//template <typename T>
-//void HashTable<T>::insertToLinkedList(int key, T item) {
-//    int index = hash(key);
-//    Node<List>* current = items[index];
-//    
-//    // Find the node with the given key
-//    while (current != nullptr) {
-//        if (current->key == key) {
-//            current->item.add(item); // Add to the linked list
-//            return;
-//        }
-//        current = current->next;
-//    }
-//
-//    // If key not found, create a new linked list and insert
-//    List newList;
-//    newList.add(item);
-//    Node<List>* newNode = new Node<List>(key, newList, items[index]);
-//    items[index] = newNode;
-//    size++;
-//}
-
-
-template <typename T>
-void HashTable<T>::remove(KeyType key) {
-    //int index = hash(key);
-
-    //if (items[index] == nullptr) {
-
-    //    bool success = (index >= 0) && (index < MAX_SIZE);
-    //    if (success)
-    //    {
-    //        // Delete item by shifting all items at positions >
-    //        // index toward the beginning of the list
-    //        for (int pos = index; pos < MAX_SIZE - 1; pos++)
-    //            items[pos] = items[pos + 1];
-    //        size--;  // Decrease the size by 1
-    //    }
-
-    //}
-    int index = hash(key);
-
-    HashNode<T>* current = items[index];
-    HashNode<T>* previous = nullptr;
-
-    while (current != nullptr) {
-        if (current->key == key) {
-            // Found the key, remove the node
-            if (previous == nullptr) {
-                items[index] = current->next; // Removing the first node in the chain
-            }
-            else {
-                previous->next = current->next; // Bypass the node
-            }
-            delete current;
-            size--;
-            return;
-        }
-        previous = current;
-        current = current->next;
-    }
-}
-
-
 
 template <typename T>
 T HashTable<T>::get(KeyType key) const {
     int index = hash(key);
-    HashNode<T>* current = items[index];
+    //HashNode<T>* current = items[index];
 
     //std::cout << "DEBUG: Searching for key " << key << " at index " << index << std::endl;
 
-    while (current != nullptr) {
-        //std::cout << "DEBUG: Checking node with key " << current->key << std::endl;
-        if (current->key == key) {
-            //std::cout << "DEBUG: Found key " << key << " in hash table." << std::endl;
-            return current->item;
-        }
-        current = current->next;
-    }
+    //while (current != nullptr) {
+    //    //std::cout << "DEBUG: Checking node with key " << current->key << std::endl;
+    //    if (current->key == key) {
+    //        //std::cout << "DEBUG: Found key " << key << " in hash table." << std::endl;
+    //        return current->item;
+    //    }
+    //    current = current->next;
+    //}
 
+    for (HashNode<T>* p = items[index]; p != NULL; p = p->next) {
+        if (p->key == key) {
+            // Step 3. Return the node if the key matches any of the node. NULL otherwise.
+            return p->item;
+        }
+    }
     //std::cout << "ERROR: Key " << key << " not found in hash table!" << std::endl;
     return T{};
 }
@@ -601,16 +553,17 @@ template <typename T>
 void HashTable<T>::print() {
     for (int i = 0; i < MAX_SIZE; i++) {
         HashNode<T>* current = items[i];
-        while (current != nullptr) {
-            std::cout << "Key: " << current->key << ", Item: ";
 
-            // Check if the item has a print method
-            // Assuming T is a class with a print() method
-            current->item->print(); // Call the print method of the item
+        //while (current != nullptr) {
+        //    std::cout << "Key: " << current->key << ", Item: ";
 
-            std::cout << std::endl;
-            current = current->next;
-        }
+        //    // Check if the item has a print method
+        //    // Assuming T is a class with a print() method
+        //    current->item->print(); // Call the print method of the item
+
+        //    std::cout << std::endl;
+        //    current = current->next;
+        //}
     }
     std::cout << endl;
 }

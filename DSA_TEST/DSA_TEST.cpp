@@ -148,13 +148,13 @@ int main()
     readCastCSV("cast.csv", actorMovieGraph);*/
 
 
-    readActorCSV("people2.csv", actorMovieGraph, actorAVL);
-    readMovieCSV("movies2.csv", actorMovieGraph, movieAVL);
-    readCastCSV("cast2.csv", actorMovieGraph);
+    //readActorCSV("people2.csv", actorMovieGraph, actorAVL);
+    //readMovieCSV("movies2.csv", actorMovieGraph, movieAVL);
+    //readCastCSV("cast2.csv", actorMovieGraph);
 
-    //readActorCSV("actors3.csv", actorMovieGraph, actorAVL);
-    //readMovieCSV("movies3.csv", actorMovieGraph, movieAVL);
-    //readCastCSV("cast3.csv", actorMovieGraph);
+    readActorCSV("actors3.csv", actorMovieGraph, actorAVL);
+    readMovieCSV("movies3.csv", actorMovieGraph, movieAVL);
+    readCastCSV("cast3.csv", actorMovieGraph);
 
     std::string opt = "";
     //displayArtAndTitle();

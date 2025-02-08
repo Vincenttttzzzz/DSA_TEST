@@ -1078,7 +1078,7 @@
 
 using namespace std;
 
-const int MAX_SIZE = 1009; // Change from 101 to 1009 or 5003
+const int MAX_SIZE = 1000003; // Change from 101 to 1009 or 5003
 typedef int KeyType;
 
 template <typename T>
@@ -1091,7 +1091,7 @@ struct HashNode {
 template <typename T>
 class HashTable {
 private:
-    HashNode<T>* items[MAX_SIZE];
+    HashNode<T>** items;
     int size;
 
 public:
@@ -1100,7 +1100,7 @@ public:
     int hash(KeyType key) const;
     bool add(KeyType newKey, T newItem);
     //void insertToLinkedList(int key, T item);
-    void remove(KeyType key);
+    //void remove(KeyType key);
     T get(KeyType key) const;
     bool isEmpty();
     int getLength();

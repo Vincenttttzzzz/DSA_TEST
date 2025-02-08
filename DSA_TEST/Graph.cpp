@@ -22,7 +22,7 @@ std::shared_ptr<Actor> Graph::getActor(int id) const {
 	return actorTable.get(id);
 }
 
-// Get the movie with the given ID.
+// Get the movie with the give  n ID.
 // Returns a weak pointer to the movie if found, an expired weak pointer otherwise.
 std::shared_ptr<Movie> Graph::getMovie(int id) const {
 	return movieTable.get(id);
