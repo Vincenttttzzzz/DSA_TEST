@@ -13,6 +13,13 @@ struct EntityRatings {
         numRatings++;
         ratings.add(rating);
     }
+
+	void print() const {
+		std::cout << "Number of ratings: " << numRatings << std::endl;
+		std::cout << "Sum of scores: " << sumScores << std::endl;
+		std::cout << "Ratings: ";
+		//ratings.print();
+	}
 };
 
 class RatingSystem {
@@ -71,13 +78,6 @@ public:
     // Retrieve reviews for a movie
     const LinkedList<Rating>& getMovieReviews(int movieId) const {
         const EntityRatings* er = movieRatings.get(movieId);
-        static LinkedList<Rating> empty;
-        return er ? er->ratings : empty;
-    }
-
-    // Retrieve reviews for an actor
-    const LinkedList<Rating>& getActorReviews(int actorId) const {
-        const EntityRatings* er = actorRatings.get(actorId);
         static LinkedList<Rating> empty;
         return er ? er->ratings : empty;
     }

@@ -1,100 +1,106 @@
-// Self implementation of
-// the Vector Class in C++
-using namespace std;
+#ifndef VECTOR_CLASS_H
+#define VECTOR_CLASS_H
 
-template <typename T> 
+#include <iostream>
+#include "Actor.h"
+
+
+template <typename T>
 class vectorClass {
-
-    // arr is the integer pointer
-    // which stores the address of our vector
+private:
     T* arr;
-
-    // capacity is the total storage
-    // capacity of the vector
     int capacity;
-
-    // current is the number of elements
-    // currently present in the vector
     int current;
 
 public:
-    // Default constructor to initialise
-    // an initial capacity of 1 element and
-    // allocating storage using dynamic allocation
-    vectorClass()
-    {
-        arr = new T[1];
-        capacity = 1;
-        current = 0;
-    }
-    // destructor to deallocate storage allocated by dynamic
-    // allocation to prevent memory leak
+    // Constructor
+    vectorClass() : arr(new T[1]), capacity(1), current(0) {}
+
+    // Destructor
     ~vectorClass() { delete[] arr; }
 
-    // Function to add an element at the last
-    void push(T data)
-    {
+    // Copy constructor (important to prevent double deletion)
+    vectorClass(const vectorClass& other) : capacity(other.capacity), current(other.current) {
+        arr = new T[capacity];
+        for (int i = 0; i < current; i++) {
+            arr[i] = other.arr[i];
+        }
+    }
 
-        // if the number of elements is equal to the
-        // capacity, that means we don't have space to
-        // accommodate more elements. We need to double the
-        // capacity
+    // Assignment operator
+    vectorClass& operator=(const vectorClass& other) {
+        if (this != &other) {
+            delete[] arr;
+            capacity = other.capacity;
+            current = other.current;
+            arr = new T[capacity];
+            for (int i = 0; i < current; i++) {
+                arr[i] = other.arr[i];
+            }
+        }
+        return *this;
+    }
+
+    void push(const T& data) {
         if (current == capacity) {
             T* temp = new T[2 * capacity];
-
-            // copying old array elements to new array
             for (int i = 0; i < capacity; i++) {
                 temp[i] = arr[i];
             }
-
-            // deleting previous array
             delete[] arr;
             capacity *= 2;
             arr = temp;
         }
-
-        // Inserting data
         arr[current] = data;
         current++;
     }
 
-    // function to add element at any index
-    void push(T data, int index)
-    {
-
-        // if index is equal to capacity then this
-        // function is same as push defined above
-        if (index == capacity)
-            push(data);
-        else
-            arr[index] = data;
-    }
-
-    // function to extract element at any index
-    T get(int index)
-    {
-        // if index is within the range
-        if (index < current)
-            return arr[index];
-        // if index is not within range
-        return -1;
-    }
-
-    // function to delete last element
-    void pop() { current--; }
-
-    // function to get size of the vector
-    int size() { return current; }
-
-    // function to get capacity of the vector
-    int getcapacity() { return capacity; }
-
-    // function to print array elements
-    void print()
-    {
-        for (int i = 0; i < current; i++) {
-            cout << arr[i] << " ";
+    void push(const T& data, int index) {
+        if (index < 0 || index > current) {
+            throw std::out_of_range("Index out of bounds");
         }
-        cout << endl;
+        if (index == current) {
+            push(data);
+        }
+        else {
+            arr[index] = data;
+        }
     }
+
+    // Fixed get function with const correctness
+    const T& get(int index) const {
+        if (index < 0 || index >= current) {
+            throw std::out_of_range("Index out of bounds");
+        }
+        return arr[index];
+    }
+
+    // Non-const version of get
+    T& get(int index) {
+        if (index < 0 || index >= current) {
+            throw std::out_of_range("Index out of bounds");
+        }
+        return arr[index];
+    }
+
+    void pop() {
+        if (current > 0) {
+            current--;
+        }
+    }
+
+    int size() const { return current; }
+    int getcapacity() const { return capacity; }
+
+    void print() const {
+        for (int i = 0; i < current; i++) {
+            std::cout << arr[i] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    T* data() { return arr; }
+
 };
+
+#endif // VECTOR_CLASS_H

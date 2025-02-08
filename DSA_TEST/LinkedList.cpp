@@ -1,3 +1,165 @@
+#pragma once
+#include <iostream>
+#include "LinkedList.h"
+#include "Movie.h"
+#include "Actor.h"
+#include "HashTable.h"
+#include "Rating.h"
+
+template class LinkedList<std::weak_ptr<Movie>>;
+//template struct HashNode<std::shared_ptr<Movie>>;
+//template struct HashNode<std::shared_ptr<Actor>>;
+template class LinkedList<std::shared_ptr<Movie>>;
+template class LinkedList<std::shared_ptr<Actor>>;
+template class LinkedList<Rating>;
+//template class LinkedList<HashNode<std::shared_ptr<Movie>>*>;
+//template class LinkedList<HashNode<std::shared_ptr<Actor>>*>;
+//template struct Node<Movie>;       // For Node<Movie> if n;eeded
+
+using namespace std;
+
+// Constructor
+template <typename T>
+LinkedList<T>::LinkedList() : head(nullptr), size(0) {}
+
+// Destructor: delete all nodes to avoid memory leaks
+template <typename T>
+LinkedList<T>::~LinkedList() {
+    while (head) {
+        Node<T>* temp = head;
+        head = head->next;
+        delete temp;
+    }
+}
+
+// Add an element at the front of the list (O(1) insertion)
+template <typename T>
+void LinkedList<T>::add(const T& data) {
+    Node<T>* newHead = new Node<T>(data);  // Specify Node<T> instead of just Node
+    newHead->next = head;  // Correctly link the new node to the current head
+    head = newHead;        // Update the head to the new node
+    size++;
+}
+
+// Retrieve the element at the specified index (throws exception if out of range)
+template <typename T>
+T LinkedList<T>::get(int index) const {
+    if (index < 0 || index >= size) {
+        throw std::out_of_range("Index out of range in LinkedList::get()");
+    }
+    Node<T>* current = head;
+    for (int i = 0; i < index; i++) {
+        current = current->next;
+    }
+    return current->item;
+}
+
+// Return a pointer to the first node (allows iteration)
+//template <typename T>
+template <typename T>
+Node<T>* LinkedList<T>::getFirstNode() const {
+    // Explicit null check
+    if (head == nullptr) {
+        return nullptr;  // Safe return instead of undefined behavior
+    }
+    return head;
+}
+
+// Check if the list is empty
+template <typename T>
+bool LinkedList<T>::isEmpty() const {
+    return size == 0;
+}
+
+// Get the number of elements in the list
+template <typename T>
+int LinkedList<T>::getLength() const {
+    return size;
+}
+
+// Print all elements in the list (assumes T supports operator<<)
+//template <typename T>
+//void LinkedList<T>::print() const {
+//    Node* current = head;
+//    while (current) {
+//        // Handle weak_ptr special cases first
+//        if constexpr (std::is_same_v<T, std::weak_ptr<Movie>> ||
+//            std::is_same_v<T, std::weak_ptr<Actor>>) {
+//            // Try to lock the weak_ptr to get access to the object
+//            if (auto ptr = current->item.lock()) {
+//                // Call the object's print method
+//                ptr->print();
+//                std::cout << " ";
+//            }
+//            else {
+//                std::cout << "[Expired] ";
+//            }
+//        }
+//        // Handle shared_ptr cases
+//        else if constexpr (std::is_pointer_v<T> ||
+//            is_smart_pointer_v<T>) {
+//            // For pointers (both raw and smart), dereference and call print
+//            if (current->item) {  // Check for null
+//                current->item->print();
+//                std::cout << " ";
+//            }
+//            else {
+//                std::cout << "[Null] ";
+//            }
+//        }
+//        // Handle regular objects that have a print method
+//        else {
+//            current->item.print();
+//            std::cout << " ";
+//        }
+//        current = current->next;
+//    }
+//    std::cout << std::endl;
+//}
+
+//// Add an element at the end of the list
+//void add(const T& data) {
+//    if (!head) {
+//        head = new Node(data);
+//    }
+//    else {
+//        Node* current = head;
+//        while (current->next != nullptr) {
+//            current = current->next;
+//        }
+//        current->next = new Node(data);
+//    }
+//    size++;
+//}
+
+// Add an element at a specified index (0-indexed)
+//bool add(int index, const T& data) {
+//    if (index < 0 || index > size) {
+//        return false; // Out of bounds
+//    }
+//    if (index == 0) {
+//        addFront(data);
+//        return true;
+//    }
+//    Node* current = head;
+//    for (int i = 0; i < index - 1; i++) {
+//        current = current->next;
+//    }
+//    current->next = new Node(data, current->next);
+//    size++;
+//    return true;
+//}
+
+
+
+
+
+
+
+
+
+
+
 //#include "LinkedList.h"
 //
 ////do i need to set pointer to nullptr when they are declared?

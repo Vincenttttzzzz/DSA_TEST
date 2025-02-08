@@ -133,7 +133,6 @@
     <ClCompile Include="BinaryTree.cpp" />
     <ClCompile Include="Movie.cpp" />
     <ClCompile Include="LinkedList.cpp" />
-    <ClCompile Include="List.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GraphTest.cpp" />
     <ClCompile Include="Rating.cpp" />
@@ -150,7 +149,6 @@
     <ClInclude Include="Rating.h" />
     <ClInclude Include="RatingSystem.h" />
     <ClInclude Include="Vector.h" />
-    <ClInclude Include="List.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Movie.h" />
   </ItemGroup>

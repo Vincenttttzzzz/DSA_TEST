@@ -14,16 +14,31 @@ using namespace std;
 class Graph {
 private:
     // Main storage for actors (shared pointers)
-    HashTable<shared_ptr<Actor>> actorTable;
+    HashTable<std::shared_ptr<Actor>> actorTable;
+
+    HashTable<std::shared_ptr<Movie>> movieTable;
+
     // Mapping from actor ID to a list (LinkedList) of movies (stored as weak pointers)
-    HashTable<LinkedList<weak_ptr<Movie>>*> actorToMovie;
+    HashTable<LinkedList<std::weak_ptr<Movie>>*> actorToMovie;
 
 public:
     Graph();
 
+	std::shared_ptr<Actor> getActor(int id) const;
+
+	std::shared_ptr<Movie> getMovie(int id) const;
+
+	LinkedList<std::weak_ptr<Movie>>* getMovies(int actorId) const;
+
+    bool insertNewActor(int id, shared_ptr<Actor>& actor);
+
+    bool insertNewMovie(int id, shared_ptr<Movie>& movie);
+
+    bool insertActorToMovie(int actorId, int movieId);
+
     // Insert actor-to-movie relationships:
     // Associates the given movie list with the actor in actorToMovie.
-    void insertActorRelationships(LinkedList<weak_ptr<Movie>>* movieList, const weak_ptr<Actor>& actor);
+    //void insertActorRelationships(LinkedList<weak_ptr<Movie>>* movieList, const weak_ptr<Actor>& actor);
 
     // Display known actors for a given source actor.
     // 1. Get the actor’s movie list from actorToMovie.

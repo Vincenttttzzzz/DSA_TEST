@@ -65,7 +65,7 @@ public:
     }
 
     // Dequeue and retrieve via reference (returns success)
-    T dequeue(T& item) {
+    bool dequeue(T& item) {
         if (isEmpty()) return false;
 
         Node* temp = frontNode;

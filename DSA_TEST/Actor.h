@@ -47,7 +47,4 @@ public:
         return ratingSystem.getActorBayesianAverage(actorID);
     }
 
-    const LinkedList<Rating>& getReviews(const RatingSystem& ratingSystem) const {
-        return ratingSystem.getActorReviews(actorID);
-    }
 };
