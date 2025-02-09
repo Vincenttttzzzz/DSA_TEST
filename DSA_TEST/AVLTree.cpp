@@ -197,7 +197,7 @@ void AVLTree<T>::inOrderRange(AVLNode* node, int low, int high, Callback cb) con
         cb(node->data);
 
     // Traverse right if there is a chance of finding a valid node
-    if (node->item < high || (node->item == high && node->key < high))
+    if (node->item <= high || (node->item == high && node->key < high))
         inOrderRange(node->right, low, high, cb);
 }
 
