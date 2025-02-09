@@ -49,7 +49,6 @@ public:
     // Delegate rating operations to RatingSystem
     void addRating(const Rating& rating, RatingSystem& ratingSystem);
     double getBayesianAverage(const RatingSystem& ratingSystem) const;
-    const LinkedList<Rating>& getReviews(const RatingSystem& ratingSystem) const;
 };
 
 // #pragma once

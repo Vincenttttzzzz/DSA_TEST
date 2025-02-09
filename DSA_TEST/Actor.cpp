@@ -15,7 +15,6 @@ int Actor::getActorID() const { return actorID; }
 string Actor::getName() const { return name; }
 int Actor::getYear() const { return year; }
 
-void Actor::setActorID(int newActorID) { actorID = newActorID; }
 void Actor::setName(const string& newName) { name = newName; }
 void Actor::setYear(int newYear) { year = newYear; }
 

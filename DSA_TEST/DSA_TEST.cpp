@@ -143,18 +143,18 @@ int main()
 
     RatingSystem ratingSystem;
 
-    /*readActorCSV("actors.csv", actorMovieGraph, actorAVL);
+    readActorCSV("actors.csv", actorMovieGraph, actorAVL);
     readMovieCSV("movies.csv", actorMovieGraph, movieAVL);
-    readCastCSV("cast.csv", actorMovieGraph);*/
+    readCastCSV("cast.csv", actorMovieGraph);
 
 
     //readActorCSV("people2.csv", actorMovieGraph, actorAVL);
     //readMovieCSV("movies2.csv", actorMovieGraph, movieAVL);
     //readCastCSV("cast2.csv", actorMovieGraph);
 
-    readActorCSV("actors3.csv", actorMovieGraph, actorAVL);
-    readMovieCSV("movies3.csv", actorMovieGraph, movieAVL);
-    readCastCSV("cast3.csv", actorMovieGraph);
+    //readActorCSV("actors3.csv", actorMovieGraph, actorAVL);
+    //readMovieCSV("movies3.csv", actorMovieGraph, movieAVL);
+    //readCastCSV("cast3.csv", actorMovieGraph);
 
     std::string opt = "";
     //displayArtAndTitle();
@@ -162,7 +162,7 @@ int main()
     {
         displayMenu();
         std::cout << "Enter your choice: ";
-        std::cin >> opt;
+        getline(cin, opt);  // Read the entire line of input.
 
         if (opt == "1") {
             addNewActor(actorMovieGraph, actorAVL);
@@ -951,7 +951,7 @@ void displayActorsForMovie(const Graph& actorMovieGraph) {
     quickSort(actorArray, 0, actorVector.size() - 1,
         [](const std::shared_ptr<Actor>& a, const std::shared_ptr<Actor>& b) {
             return a->getName() < b->getName();
-        });
+        }); 
 
     cout << "Actors for Movie ID " << movieId << " (sorted by name):" << endl;
     for (int i = 0; i < actorVector.size(); ++i) {

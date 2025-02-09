@@ -26,7 +26,6 @@ public:
     int getYear() const;
 
     // Setters
-    void setActorID(int newActorID);
     void setName(const string& newName);
     void setYear(int newBirth);
 

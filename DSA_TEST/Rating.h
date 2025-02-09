@@ -9,11 +9,11 @@ private:
     std::time_t timestamp;// Timestamp of the rating
 
 public:
-    Rating(double score, int userId)
-        : score(score), userId(userId), timestamp(std::time(nullptr)) {}
+    // Constructor declaration
+    Rating(double score, int userId);
 
-    // Getters
-    double getScore() const { return score; }
-    int getUserId() const { return userId; }
-    std::time_t getTimestamp() const { return timestamp; }
+    // Getter declarations
+    double getScore() const;
+    int getUserId() const;
+    std::time_t getTimestamp() const;
 };

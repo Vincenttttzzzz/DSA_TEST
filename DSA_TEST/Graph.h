@@ -22,7 +22,7 @@ private:
     HashTable<LinkedList<std::weak_ptr<Movie>>*> actorToMovie;
 
 public:
-    Graph();
+    Graph(); 
 
 	std::shared_ptr<Actor> getActor(int id) const;
 
@@ -48,4 +48,9 @@ public:
 
     // Helper function to print a vectorClass of weak_ptr<Actor>
     void printConnections(const vectorClass<weak_ptr<Actor>>& actorVector) const;
+};
+
+struct ActorLevel {
+    std::weak_ptr<Actor> actor;
+    int level;  // 0 = source, 1 = direct, 2 = indirect
 };
