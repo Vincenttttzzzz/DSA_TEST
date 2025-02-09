@@ -7,7 +7,7 @@
 #include "Queue.h"
 #include "Actor.h"
 #include "Movie.h"
-#include "vector.h"  // Your vectorClass implementation
+#include "vector.h"  // Your std::vector implementation
 
 using namespace std;
 
@@ -42,12 +42,12 @@ public:
 
     // Display known actors for a given source actor.
     // 1. Get the actor’s movie list from actorToMovie.
-    // 2. For each movie, get the movie’s vector (vectorClass) of actors.
+    // 2. For each movie, get the movie’s vector (std::vector) of actors.
     // 3. Use BFS (via a Queue) and a visited hash table to avoid duplicates.
     void displayKnownActors(const weak_ptr<Actor>& sourceActor) const;
 
-    // Helper function to print a vectorClass of weak_ptr<Actor>
-    void printConnections(const vectorClass<weak_ptr<Actor>>& actorVector) const;
+    // Helper function to print a std::vector of weak_ptr<Actor>
+    void printConnections(const std::vector<weak_ptr<Actor>>& actorVector) const;
 };
 
 struct ActorLevel {

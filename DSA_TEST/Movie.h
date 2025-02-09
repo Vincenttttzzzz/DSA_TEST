@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
-#include "vector.h"         // Your custom vector implementation (vectorClass)
+#include "vector.h"         // Your custom vector implementation (std::vector)
 #include "Actor.h"
 #include "Rating.h"
 #include "RatingSystem.h"
@@ -16,8 +16,8 @@ private:
     string title;
     string plot;
     int year;
-    // Use vectorClass to store a dynamic array of weak pointers to Actor
-    vectorClass<std::weak_ptr<Actor>> listOfActors;
+    // Use std::vector to store a dynamic array of weak pointers to Actor
+    std::vector<std::weak_ptr<Actor>> listOfActors;
 
 public:
     // Default Constructor
@@ -30,9 +30,9 @@ public:
     string getPlot() const;
     int getYear() const;
     // Provide both non-const and const versions for accessing the actor list.
-    vectorClass<weak_ptr<Actor>>& getListOfActors();
+    std::vector<weak_ptr<Actor>>& getListOfActors();
 
-    const vectorClass<weak_ptr<Actor>>& getListOfActors() const;
+    const std::vector<weak_ptr<Actor>>& getListOfActors() const;
 
     // Setters
     void setMovieID(int newMovieID);
@@ -54,7 +54,7 @@ public:
 // #pragma once
 //#include <string>
 //#include <iostream>
-//#include "vector.h"         // Your custom vector implementation (vectorClass)
+//#include "vector.h"         // Your custom vector implementation (std::vector)
 //#include "Actor.h"
 //#include "Rating.h"
 //#include "RatingSystem.h"
@@ -69,8 +69,8 @@ public:
 //    string title;
 //    string plot;
 //    int year;
-//    // Use vectorClass to store a dynamic array of weak pointers to Actor
-//    vectorClass<std::weak_ptr<Actor>> listOfActors;
+//    // Use std::vector to store a dynamic array of weak pointers to Actor
+//    std::vector<std::weak_ptr<Actor>> listOfActors;
 //
 //public:
 //    // Default Constructor
@@ -83,8 +83,8 @@ public:
 //    string getTitle() const;
 //    string getPlot() const;
 //    int getYear() const;
-//    // Return reference to the vectorClass of weak pointers
-//    vectorClass<std::weak_ptr<Actor>>* getListOfActors();
+//    // Return reference to the std::vector of weak pointers
+//    std::vector<std::weak_ptr<Actor>>* getListOfActors();
 //
 //    // Setters
 //    void setMovieID(int newMovieID);
@@ -113,7 +113,7 @@ public:
 //        return ratingSystem.getMovieBayesianAverage(movieID);
 //    }
 //
-//    // Assuming RatingSystem.getMovieReviews returns a vectorClass<Rating>
+//    // Assuming RatingSystem.getMovieReviews returns a std::vector<Rating>
 //    const LinkedList<Rating>& getReviews(const RatingSystem& ratingSystem) const {
 //        return ratingSystem.getMovieReviews(movieID);
 //    }

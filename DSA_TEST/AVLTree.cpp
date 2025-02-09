@@ -188,11 +188,16 @@ template <typename Callback>
 void AVLTree<T>::inOrderRange(AVLNode* node, int low, int high, Callback cb) const {
     if (!node)
         return;
-    if (node->item > low)
+    // Traverse left if there is a chance of finding a valid node
+    if (node->item > low || (node->item == low && node->key > low))
         inOrderRange(node->left, low, high, cb);
+
+    // Process the node if it's within the range
     if (node->item >= low && node->item <= high)
         cb(node->data);
-    if (node->item <= high)
+
+    // Traverse right if there is a chance of finding a valid node
+    if (node->item < high || (node->item == high && node->key < high))
         inOrderRange(node->right, low, high, cb);
 }
 

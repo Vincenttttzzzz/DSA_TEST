@@ -18,10 +18,10 @@ string Movie::getPlot() const { return plot; }
 int Movie::getYear() const { return year; }
 
 // Provide both non-const and const versions for accessing the actor list.
-vectorClass<weak_ptr<Actor>>& Movie::getListOfActors() {
+std::vector<weak_ptr<Actor>>& Movie::getListOfActors() {
     return listOfActors;
 }
-const vectorClass<weak_ptr<Actor>>& Movie::getListOfActors() const {
+const std::vector<weak_ptr<Actor>>& Movie::getListOfActors() const {
     return listOfActors;
 }
 // Setters
@@ -48,7 +48,7 @@ ostream& operator<<(ostream& os, const Movie& movie) {
 
 // Add an actor: simply push the weak pointer into the vector
 void Movie::addActor(const std::weak_ptr<Actor>& actor) {
-    listOfActors.push(actor);
+    listOfActors.push_back(actor);
 }
 
 // Delegate rating operations to RatingSystem

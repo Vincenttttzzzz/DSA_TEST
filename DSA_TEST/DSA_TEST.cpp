@@ -156,6 +156,7 @@ int main()
     //readMovieCSV("movies3.csv", actorMovieGraph, movieAVL);
     //readCastCSV("cast3.csv", actorMovieGraph);
 
+	displayArtAndTitle();
     std::string opt = "";
     //displayArtAndTitle();
     while (opt != "0")
@@ -752,7 +753,9 @@ void updateActor(Graph& actorMovieGraph) {
 
 void updateMovie(Graph& actorMovieGraph) {
     // Get movie ID using the safe integer input function.
-    int movieId = getIntegerInput("Which Movie(Id) do you want to update: ");
+    int movieId;
+    std::cout << "Which Movie(Id) do you want to update: ";
+    std::cin >> movieId;
     std::cout << std::endl;
 
     auto movie = actorMovieGraph.getMovie(movieId);
@@ -905,7 +908,7 @@ void displayMoviesForActor(const Graph& actorMovieGraph) {
         return;
     }
 
-    mergeSort(movieVector.data(), 0, movieVector.size() - 1,
+    quickSort(movieVector.data(), 0, movieVector.size() - 1,
         [](const auto& a, const auto& b) { return a->getTitle() < b->getTitle(); });
 
     cout << "Movies for Actor ID " << actorId << " (sorted by title):" << endl;
@@ -916,49 +919,53 @@ void displayMoviesForActor(const Graph& actorMovieGraph) {
 }
 
 
+// Function to display actors for a movie using merge sort.
 void displayActorsForMovie(const Graph& actorMovieGraph) {
     int movieId;
-    cout << "Enter Movie ID: ";
-    cin >> movieId;
+    std::cout << "Enter Movie ID: ";
+    std::cin >> movieId;
 
     auto movie = actorMovieGraph.getMovie(movieId);
     if (!movie) {
-        cout << "Movie not found!" << endl;
+        std::cout << "Movie not found!" << std::endl;
         return;
     }
 
-    const vectorClass<std::weak_ptr<Actor>>& listOfActors = movie->getListOfActors();
+    // Retrieve the list of actors as a std::vector of weak_ptr<Actor>
+    const std::vector<std::weak_ptr<Actor>>& listOfActors = movie->getListOfActors();
     if (listOfActors.size() == 0) {
-        cout << "No valid actors to display!" << endl;
+        std::cout << "No valid actors to display!" << std::endl;
         return;
     }
 
-    // Build vector of valid actors
-    vectorClass<std::shared_ptr<Actor>> actorVector;
+    // Build a std::vector of valid shared_ptr<Actor> by locking the weak pointers.
+    std::vector<std::shared_ptr<Actor>> actorVector;
     for (int i = 0; i < listOfActors.size(); ++i) {
-        if (auto actor = listOfActors.get(i).lock()) {
-            actorVector.push(actor);
+        if (auto actor = listOfActors[i].lock()) {
+            actorVector.push_back(actor);
         }
     }
 
     if (actorVector.size() == 0) {
-        cout << "No valid actors to display!" << endl;
+        std::cout << "No valid actors to display!" << std::endl;
         return;
     }
 
-    // Convert vector to array for quicksort
+    // Use merge sort to sort the actors by name.
+    // We assume that actorVector.data() returns a pointer to the internal array.
     std::shared_ptr<Actor>* actorArray = actorVector.data();
     quickSort(actorArray, 0, actorVector.size() - 1,
         [](const std::shared_ptr<Actor>& a, const std::shared_ptr<Actor>& b) {
             return a->getName() < b->getName();
-        }); 
+        });
 
-    cout << "Actors for Movie ID " << movieId << " (sorted by name):" << endl;
+    std::cout << "Actors for Movie ID " << movieId << " (sorted by name):" << std::endl;
     for (int i = 0; i < actorVector.size(); ++i) {
         actorArray[i]->print();
     }
-    cout << endl;
+    std::cout << std::endl;
 }
+
 
 
 
@@ -995,67 +1002,67 @@ void quickSort(std::shared_ptr<T>* arr, int low, int high, Compare comp) {
 }
 
 // Merge function used by mergeSort.
-template <typename T, typename Comparator>
-void merge(T arr[], int left, int mid, int right, Comparator comp) {
-    // Calculate sizes for our temporary arrays
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
-
-    // Create temporary arrays - note we're using T directly now
-    std::vector<T> leftArr(n1);
-    std::vector<T> rightArr(n2);
-
-    // Copy data to temporary arrays
-    for (int i = 0; i < n1; i++) {
-        leftArr[i] = arr[left + i];
-    }
-    for (int j = 0; j < n2; j++) {
-        rightArr[j] = arr[mid + 1 + j];
-    }
-
-    // Standard merge process
-    int i = 0;      // Index for left array
-    int j = 0;      // Index for right array
-    int k = left;   // Index for merged array
-
-    // Compare and merge back into original array
-    while (i < n1 && j < n2) {
-        if (comp(leftArr[i], rightArr[j])) {
-            arr[k] = leftArr[i];
-            i++;
-        }
-        else {
-            arr[k] = rightArr[j];
-            j++;
-        }
-        k++;
-    }
-
-    // Copy remaining elements from left array, if any
-    while (i < n1) {
-        arr[k] = leftArr[i];
-        i++;
-        k++;
-    }
-
-    // Copy remaining elements from right array, if any
-    while (j < n2) {
-        arr[k] = rightArr[j];
-        j++;
-        k++;
-    }
-}
-
-// The mergeSort function remains the same
-template <typename T, typename Comparator>
-void mergeSort(T arr[], int left, int right, Comparator comp) {
-    if (left < right) {
-        int mid = left + (right - left) / 2;
-        mergeSort(arr, left, mid, comp);
-        mergeSort(arr, mid + 1, right, comp);
-        merge(arr, left, mid, right, comp);
-    }
-}
+//template <typename T, typename Comparator>
+//void merge(T arr[], int left, int mid, int right, Comparator comp) {
+//    // Calculate sizes for our temporary arrays
+//    int n1 = mid - left + 1;
+//    int n2 = right - mid;
+//
+//    // Create temporary arrays - note we're using T directly now
+//    std::vector<T> leftArr(n1);
+//    std::vector<T> rightArr(n2);
+//
+//    // Copy data to temporary arrays
+//    for (int i = 0; i < n1; i++) {
+//        leftArr[i] = arr[left + i];
+//    }
+//    for (int j = 0; j < n2; j++) {
+//        rightArr[j] = arr[mid + 1 + j];
+//    }
+//
+//    // Standard merge process
+//    int i = 0;      // Index for left array
+//    int j = 0;      // Index for right array
+//    int k = left;   // Index for merged array
+//
+//    // Compare and merge back into original array
+//    while (i < n1 && j < n2) {
+//        if (comp(leftArr[i], rightArr[j])) {
+//            arr[k] = leftArr[i];
+//            i++;
+//        }
+//        else {
+//            arr[k] = rightArr[j];
+//            j++;
+//        }
+//        k++;
+//    }
+//
+//    // Copy remaining elements from left array, if any
+//    while (i < n1) {
+//        arr[k] = leftArr[i];
+//        i++;
+//        k++;
+//    }
+//
+//    // Copy remaining elements from right array, if any
+//    while (j < n2) {
+//        arr[k] = rightArr[j];
+//        j++;
+//        k++;
+//    }
+//}
+//
+//// The mergeSort function remains the same
+//template <typename T, typename Comparator>
+//void mergeSort(T arr[], int left, int right, Comparator comp) {
+//    if (left < right) {
+//        int mid = left + (right - left) / 2;
+//        mergeSort(arr, left, mid, comp);
+//        mergeSort(arr, mid + 1, right, comp);
+//        merge(arr, left, mid, right, comp);
+//    }
+//}
 
 void displayActorRelationship(Graph& actorMovieGraph) {
     int actorId;

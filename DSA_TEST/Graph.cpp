@@ -151,11 +151,11 @@ void Graph::displayKnownActors(const std::weak_ptr<Actor>& sourceActor) const {
             if (!lockedMovie)
                 continue;
 
-            // Assume Movie::getListOfActors() returns a vectorClass<weak_ptr<Actor>>.
-            vectorClass<weak_ptr<Actor>> actorVector = lockedMovie->getListOfActors();
+            // Assume Movie::getListOfActors() returns a std::vector<weak_ptr<Actor>>.
+            std::vector<weak_ptr<Actor>> actorVector = lockedMovie->getListOfActors();
             int numActors = actorVector.size();
             for (int j = 0; j < numActors; j++) {
-                weak_ptr<Actor> neighborWeak = actorVector.get(j);
+                weak_ptr<Actor> neighborWeak = actorVector[j];
                 auto neighbor = neighborWeak.lock();
                 if (!neighbor)
                     continue;
@@ -177,11 +177,11 @@ void Graph::displayKnownActors(const std::weak_ptr<Actor>& sourceActor) const {
 }
 
 
-// Helper function: print connections stored in a vectorClass of weak_ptr<Actor>.
-void Graph::printConnections(const vectorClass<weak_ptr<Actor>>& actorVector) const {
+// Helper function: print connections stored in a std::vector of weak_ptr<Actor>.
+void Graph::printConnections(const std::vector<weak_ptr<Actor>>& actorVector) const {
     int n = actorVector.size();
     for (int i = 0; i < n; i++) {
-        weak_ptr<Actor> weakActor = actorVector.get(i);
+        weak_ptr<Actor> weakActor = actorVector[i];
         if (auto lockedActor = weakActor.lock()) {
             cout << lockedActor->getName() << " (ID: " << lockedActor->getActorID() << ") ";
         }

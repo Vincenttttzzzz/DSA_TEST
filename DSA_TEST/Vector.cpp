@@ -1,28 +1,28 @@
 #include "Vector.h"
 //#include "HashTable.h"
 
-// Note: Because vectorClass is a template, all definitions must be visible
+// Note: Because std::vector is a template, all definitions must be visible
 // at compile time. You can either include this file in Vector.h or use explicit
 // template instantiation for the types you need.
 
 
-template class vectorClass<std::weak_ptr<Actor>>;
-template class vectorClass<std::weak_ptr<Movie>>;
+template class std::vector<std::weak_ptr<Actor>>;
+template class std::vector<std::weak_ptr<Movie>>;
 
 
 
 template <typename T>
-vectorClass<T>::vectorClass() : arr(new T[1]), capacity(1), current(0) {}
+std::vector<T>::std::vector() : arr(new T[1]), capacity(1), current(0) {}
 
 // Destructor
 template <typename T>
-vectorClass<T>::~vectorClass() {
+std::vector<T>::~std::vector() {
     delete[] arr;
 }
 
 // Copy constructor
 template <typename T>
-vectorClass<T>::vectorClass(const vectorClass<T>& other)
+std::vector<T>::std::vector(const std::vector<T>& other)
     : capacity(other.capacity), current(other.current) {
     arr = new T[capacity];
     for (int i = 0; i < current; i++) {
@@ -32,7 +32,7 @@ vectorClass<T>::vectorClass(const vectorClass<T>& other)
 
 // Assignment operator
 template <typename T>
-vectorClass<T>& vectorClass<T>::operator=(const vectorClass<T>& other) {
+std::vector<T>& std::vector<T>::operator=(const std::vector<T>& other) {
     if (this != &other) {
         delete[] arr;
         capacity = other.capacity;
@@ -47,7 +47,7 @@ vectorClass<T>& vectorClass<T>::operator=(const vectorClass<T>& other) {
 
 // push (append at the end)
 template <typename T>
-void vectorClass<T>::push(const T& data) {
+void std::vector<T>::push(const T& data) {
     if (current == capacity) {
         T* temp = new T[2 * capacity];
         for (int i = 0; i < capacity; i++) {
@@ -63,7 +63,7 @@ void vectorClass<T>::push(const T& data) {
 
 // push at a specific index
 template <typename T>
-void vectorClass<T>::push(const T& data, int index) {
+void std::vector<T>::push(const T& data, int index) {
     if (index < 0 || index > current) {
         throw std::out_of_range("Index out of bounds");
     }
@@ -77,7 +77,7 @@ void vectorClass<T>::push(const T& data, int index) {
 
 // Const version of get
 template <typename T>
-const T& vectorClass<T>::get(int index) const {
+const T& std::vector<T>::get(int index) const {
     if (index < 0 || index >= current) {
         throw std::out_of_range("Index out of bounds");
     }
@@ -86,7 +86,7 @@ const T& vectorClass<T>::get(int index) const {
 
 // Non-const version of get
 template <typename T>
-T& vectorClass<T>::get(int index) {
+T& std::vector<T>::get(int index) {
     if (index < 0 || index >= current) {
         throw std::out_of_range("Index out of bounds");
     }
@@ -95,7 +95,7 @@ T& vectorClass<T>::get(int index) {
 
 // pop: remove the last element
 template <typename T>
-void vectorClass<T>::pop() {
+void std::vector<T>::pop() {
     if (current > 0) {
         current--;
     }
@@ -103,19 +103,19 @@ void vectorClass<T>::pop() {
 
 // Return the current number of elements
 template <typename T>
-int vectorClass<T>::size() const {
+int std::vector<T>::size() const {
     return current;
 }
 
 // Return the capacity of the vector
 template <typename T>
-int vectorClass<T>::getcapacity() const {
+int std::vector<T>::getcapacity() const {
     return capacity;
 }
 
 // Print the elements of the vector
 template <typename T>
-void vectorClass<T>::print() const {
+void std::vector<T>::print() const {
     for (int i = 0; i < current; i++) {
         std::cout << arr[i] << " ";
     }
@@ -124,15 +124,15 @@ void vectorClass<T>::print() const {
 
 // Return a pointer to the underlying array
 template <typename T>
-T* vectorClass<T>::data() {
+T* std::vector<T>::data() {
     return arr;
 }
 
 // ----- Explicit Instantiation -----
 // If you know which types you'll be using, you can explicitly instantiate them here.
 // For example:
-// template class vectorClass<int>;
-// template class vectorClass<std::weak_ptr<Actor>>;
-// template class vectorClass<Movie>;
+// template class std::vector<int>;
+// template class std::vector<std::weak_ptr<Actor>>;
+// template class std::vector<Movie>;
 // 
 // If you don't do this, you'll need to include this .cpp file in your build via the header.
